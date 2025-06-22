@@ -27,8 +27,11 @@ class NotificationService(
         sessionRepository.save(session)
     }
 
-    fun logout(session: LogoutRequest) {
-        val session = sessionRepository.findBySessionId(session.sessionId)
+    fun logout(request: LogoutRequest) {
+        val session = sessionRepository.findBySessionId(request.sessionId)
+        if (session != null) {
+            sessionRepository.delete(session)
+        }
 
     }
 

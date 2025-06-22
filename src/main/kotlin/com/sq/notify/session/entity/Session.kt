@@ -12,7 +12,6 @@ data class Session(
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID = UUID.randomUUID(),
     val sessionId: UUID,
-    var valid: Boolean = true,
     val userId: UUID,
     val sub: String,
     val iat: Long,
