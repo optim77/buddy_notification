@@ -6,4 +6,5 @@ import java.util.UUID
 
 interface SessionRepository: JpaRepository<Session, UUID> {
     fun findBySessionId(sessionId: UUID): Session?
+    fun existsBySessionId(sessionId: UUID): Boolean
 }

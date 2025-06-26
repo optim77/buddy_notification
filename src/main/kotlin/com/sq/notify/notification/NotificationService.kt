@@ -9,6 +9,7 @@ import com.sq.notify.session.entity.Session
 import com.sq.notify.session.repository.SessionRepository
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class NotificationService(
@@ -16,16 +17,26 @@ class NotificationService(
     private val messagingTemplate: SimpMessagingTemplate,
     private val sessionRepository: SessionRepository) {
 
+    @Transactional
     fun register(request: RegisterRequest) {
-        val session = Session(
-            sessionId = request.sessionId,
-            sub = request.sub,
-            iat = request.iat,
-            exp = request.exp,
-            userId = request.userId,
-        )
+        val session = sessionRepository.findById(request.sessionId).orElse(
+            Session(
+                sessionId = request.sessionId,
+                sub = request.sub,
+                iat = request.iat,
+                exp = request.exp,
+                userId = request.userId,
+            )
+        ).apply {
+            sub = request.sub
+            iat = request.iat
+            exp = request.exp
+            userId = request.userId
+        }
+
         sessionRepository.save(session)
     }
+
 
     fun logout(request: LogoutRequest) {
         val session = sessionRepository.findBySessionId(request.sessionId)

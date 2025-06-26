@@ -11,7 +11,8 @@ data class CustomUserDetails(
     private val role: String
 ) : UserDetails {
 
-    override fun getAuthorities(): Collection<GrantedAuthority> = listOf { role }
+    override fun getAuthorities(): Collection<GrantedAuthority> =
+        listOf(GrantedAuthority { role })
 
     override fun getPassword(): String? = null
 
