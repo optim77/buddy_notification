@@ -8,7 +8,7 @@ import java.util.UUID
 data class Notification(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    val id: UUID = UUID.randomUUID(),
+    val id: UUID? = null,
     @Enumerated(EnumType.STRING)
     val type: NotificationType,
     val message: String,

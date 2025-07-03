@@ -46,6 +46,7 @@ class NotificationService(
 
     }
 
+    @Transactional
     fun sendAndSave(event: NotificationRequest) {
         val notification = Notification(
             type=event.type,

@@ -42,7 +42,7 @@ class NotificationController(
         return ResponseEntity.ok().build()
     }
 
-    @PostMapping("/notification")
+    @PostMapping("/notification/notify")
     fun receiveNotification(@RequestBody notification: NotificationRequest): ResponseEntity<Void> {
         notificationService.sendAndSave(notification)
         return ResponseEntity.ok().build()
