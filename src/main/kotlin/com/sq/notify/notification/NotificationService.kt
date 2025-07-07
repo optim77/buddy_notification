@@ -58,7 +58,10 @@ class NotificationService(
         )
         notificationRepository.save(notification)
 
-        messagingTemplate.convertAndSendToUser(event.consumerUsername, "/topic/notifications/${notification.consumerId}", event)
+        messagingTemplate.convertAndSend(
+            "/topic/notifications/${notification.consumerId}",
+            event
+        )
 
     }
 
