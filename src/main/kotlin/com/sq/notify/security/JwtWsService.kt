@@ -16,7 +16,6 @@ class JwtWsService(
 ) {
     fun validateTokenAndGetUser(token: String): UserDetails {
         val key = Keys.hmacShaKeyFor(secret.toByteArray())
-        println(token)
 
         val claims = Jwts.parserBuilder()
             .setSigningKey(key)

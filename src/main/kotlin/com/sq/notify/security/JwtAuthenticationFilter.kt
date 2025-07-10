@@ -16,7 +16,11 @@ class JwtAuthenticationFilter(
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
-        return  path.startsWith("/gen-token") || request.method == "GET"
+        return  path.startsWith("/gen-token") ||
+                request.method == "GET" ||
+                path.startsWith("/notification/register") ||
+                path.startsWith("/notification/logout") ||
+                path.startsWith("/notification/logout/all")
     }
 
     override fun doFilterInternal(
@@ -46,7 +50,6 @@ class JwtAuthenticationFilter(
             SecurityContextHolder.getContext().authentication = authentication
 
         } catch (ex: Exception) {
-            // Możesz logować błąd albo dodać 401 odpowiedź, jeśli chcesz
             SecurityContextHolder.clearContext()
         }
 

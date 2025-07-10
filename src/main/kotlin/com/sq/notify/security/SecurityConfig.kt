@@ -34,6 +34,7 @@ class SecurityConfig(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it.requestMatchers("/gen-token").permitAll()
+                it.requestMatchers("/notification/notify").permitAll()
                 it.requestMatchers("/ws/**").permitAll()
                 it.requestMatchers(HttpMethod.GET).permitAll()
                 it.anyRequest().authenticated()
