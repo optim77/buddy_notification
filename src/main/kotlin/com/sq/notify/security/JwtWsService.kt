@@ -3,6 +3,7 @@ package com.sq.notify.security
 import com.sq.notify.session.repository.SessionRepository
 import com.sq.notify.user.CustomUserDetails
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetails
@@ -14,8 +15,8 @@ class JwtWsService(
     @Value("\${jwt.secret}") private val secret: String,
     private val sessionRepository: SessionRepository
 ) {
+    val key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret))
     fun validateTokenAndGetUser(token: String): UserDetails {
-        val key = Keys.hmacShaKeyFor(secret.toByteArray())
 
         val claims = Jwts.parserBuilder()
             .setSigningKey(key)
@@ -31,7 +32,7 @@ class JwtWsService(
         val exp = claims["exp"]?.toString()?.toLong()
 
         val session = sessionRepository.findBySessionId(UUID.fromString(sessionId))
-        if (session != null && sub == session.sub && exp != null && session.exp > exp) {
+        if (session != null && sub == session.sub && exp != null) {
             return CustomUserDetails(UUID.fromString(userId), username, role)
         }
         throw IllegalArgumentException("User not found")
